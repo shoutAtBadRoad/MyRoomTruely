@@ -69,17 +69,31 @@
 			this.myId = uni.getStorageSync("user");
 			this.myImg = uni.getStorageSync('Ava'+ this.myId);
 			var myInfo = uni.getStorageSync("myInfo");
-			// if(myInfo == null){
-				this.axios.request({
-					url:'/user/getUser/' + this.myId,
-					method:'GET'
-				}).then((res)=>{
-					console.log(res.data)
-					if(res.data.code==200){
-						this.myName = res.data.data.nickName;
-						uni.setStorageSync("myInfo",res.data.data);
+			
+			uni.request({
+				url:'/web/user/getUser',
+				method:'GET',
+				success: (res) => {
+					console.log("session获得的方法：" + res.data)
+					var res = res.data;
+					if(res.code==200){
+						this.myName = res.data.nickName;
+						uni.setStorageSync("myInfo",res.data);
 					}
-				})
+				}
+			})
+			
+			// if(myInfo == null){
+			// this.$axios({
+			// 		url:'/user/getUser/' + this.myId,
+			// 		method:'GET'				
+			// }).then((res)=>{
+			// 		// console.log(res.data)
+			// 		if(res.code==200){
+			// 			this.myName = res.data.nickName;
+			// 			uni.setStorageSync("myInfo",res.data);
+			// 		}
+			// 	})
 			// }
 		},
 		comments:{clAvatar}

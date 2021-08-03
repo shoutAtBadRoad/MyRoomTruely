@@ -29,6 +29,31 @@
 			}
 		},
 		methods: {
+			async pageInit(){
+				this.frdList = [],
+				
+				await this.$axios({
+					url:"/frd/getFrd/"+uni.getStorageSync('user'),
+					method:'GET',
+				}).then((data)=>{
+					var data = data.data;
+					// console.log(data)
+					for(var i=0;i<data.length;i++){
+						// console.log(data[i])					
+						var c  = {
+							frdName: data[i].friendName,
+							frdId: data[i].friend,
+							chatId: data[i].chatId,
+							index: i,
+							ava: '',
+						};
+						this.frdList.push(c);
+						}
+					})
+				
+				for(var i=0;i<this.frdList.length;i++)
+					await this.getAvatar(this.frdList[i].frdId,i);
+			},
 			startChat(e){
 				
 				uni.navigateTo({
@@ -38,44 +63,23 @@
 			},
 			getAvatar(e,j){
 				var that = this;
-				this.axios.request({
-					url:"/user/getAvatar/"+e,
+				
+				this.$axios({
 					method:'GET',
-				}).then(function(data){
-					// var data = data.data.data;
-					console.log(data)
-					that.frdList[j].ava = "data:image/jpeg;base64,"+data.data.data;
+					url:"/user/getAvatar/"+e,
+				}).then(res=>{
+					that.frdList[j].ava = "data:image/jpeg;base64,"+res.data;
 					uni.setStorageSync("Ava"+e, that.frdList[j].ava);
 				})
+			
 			}
 		},
 		created() {
 			console.log("created");
 		},
-		async mounted() {
+		mounted() {
 			console.log("mounted");
-			this.frdList = [],
-			
-			await this.axios.request({
-				url:"/frd/getFrd/"+uni.getStorageSync('user'),
-				method:'GET',
-			}).then((data)=>{
-				var data = data.data;
-				// console.log(data)
-				for(var i=0;i<data.length;i++){
-					// console.log(data[i])					
-					var c  = {
-						frdName: data[i].friendName,
-						frdId: data[i].friend,
-						chatId: data[i].chatId,
-						index: i,
-						ava: '',
-					};
-					this.frdList.push(c);
-					}
-				})
-			for(var i=0;i<this.frdList.length;i++)
-				await this.getAvatar(this.frdList[i].frdId,i);
+			this.pageInit();
 		}
 			
 	}

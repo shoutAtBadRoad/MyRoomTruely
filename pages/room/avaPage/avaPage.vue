@@ -30,13 +30,13 @@
 		},
 		methods: {
 			async imgOnSuccess(){
-				await this.axios.request({
+				await this.$axios({
 					url:'/user/getAvatar/'+this.myId,
-					method:'GET',
+					method:'GET',					
 				}).then((res)=>{
 					console.log(res.data)
-					if(res.data.code==200){
-						uni.setStorageSync('Ava'+this.myId,"data:image/jpeg;base64,"+res.data.data);
+					if(res.code==200){
+						uni.setStorageSync('Ava'+this.myId,"data:image/jpeg;base64,"+res.data);
 					}
 				})
 				this.time=Math.round(Math.random()*1000);
@@ -49,10 +49,6 @@
 			this.src = 'http://localhost:8082/' + uni.getStorageSync("myInfo").imageUrl;
 			this.myId = uni.getStorageSync("myInfo").id;
 			this.time = Math.round(Math.random()*1000);
-			// this.action = this.action + this.myId;
-			// this.$refs.upload.action = this.action;
-			// this.myId = e;
-			// this.src = "http://localhost:8082/avatar/ava"+e+".jpeg";
 		}
 	}
 </script>

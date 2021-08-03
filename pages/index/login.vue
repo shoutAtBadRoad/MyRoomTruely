@@ -53,21 +53,22 @@
 					return;
 				}
 				
-				await this.axios.request({
-					url: '/user/login',
-					method: 'post',
-					params: {
+				uni.request({
+					method:'POST',//请求方式  或GET，必须为大写
+					url:'/web/user/login',
+					data:{
 						userName: p.userName,
-						passWord: p.passWord,
-						},
-				}).then(function({data}){
-					// console.log(data);
-						if(data!=false){
-							// console.log("login success");
-
-							// var start = new Date().getTime();
-							// while(true)  if(new Date().getTime()-start > 1000) break;
-							uni.setStorageSync('user',data);
+						passWord: p.passWord,						
+					},
+					withCredentials:true,
+                    xhrFields: {
+                         withCredentials: true
+                    },
+					success: (data) => {
+						console.log(data.data)
+						var data = data.data;
+						if(data.code==200){
+							uni.setStorageSync('user',data.data);
 							that.getMyAva(data);
 							uni.switchTab({
 								url:'../frdList/frdList'
@@ -78,18 +79,50 @@
 							});
 						}else{
 							that.$refs.fail.open({
-							          message: "登陆失败",
+									  message: "登陆失败",
 									  type: "error",
-							        });
+									});
 						}
+					}
 				})
+				
+				// await this.$axios({
+				// 	method:'POST',
+				// 	url:'/user/login',
+				// 	params:{
+				// 		'userName': p.userName,
+				// 		'passWord': p.passWord,						
+				// 	}
+				// }).then((data) => {
+				// 	console.log(data)
+				// 	if(data.code==200){
+				// 		// console.log("login success");
+					
+				// 		// var start = new Date().getTime();
+				// 		// while(true)  if(new Date().getTime()-start > 1000) break;
+				// 		uni.setStorageSync('user',data.data);
+				// 		that.getMyAva(data);
+				// 		uni.switchTab({
+				// 			url:'../frdList/frdList'
+				// 		})
+				// 		that.$refs.success.open({
+				// 		  message: "登陆成功",
+				// 		  type: "success",
+				// 		});
+				// 	}else{
+				// 		that.$refs.fail.open({
+				// 		          message: "登陆失败",
+				// 				  type: "error",
+				// 		        });
+				// 	}
+				// })
 			},
 			async getMyAva(e){
-				await this.axios.request({
+				await this.$axios({
 					url:'/user/getAvatar/'+e,
 					method:"GET"
 				}).then((res)=>{
-					uni.setStorageSync("Ava"+e,"data:image/jpeg;base64,"+res.data.data);
+					uni.setStorageSync("Ava"+e,"data:image/jpeg;base64,"+res.data);
 				})
 			},
 		},

@@ -69,7 +69,35 @@
         "enable" : false
     },
     "h5" : {
-        "title" : "MyRoom",
-        "domain" : "http://106.15.170.74"
+        "devServer" : {
+            "https" : false,
+            // "port": 8081,
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/web" : {
+                    "target" : "http://localhost:8082",
+                    // "target": "http://106.15.170.74:8081",
+                    // "target": "http://127.0.0.1:8081",
+                    "changeOrigin" : true,
+                    "secure" : false,
+                    "pathRewrite" : {
+                        "^/web" : "/"
+                    }
+                },
+                "/zyx" : {
+                    "target" : "http://101.133.137.140:9300",
+                    // "target": "http://106.15.170.74:8081",
+                    // "target": "http://127.0.0.1:8081",
+                    "changeOrigin" : true,
+                    "secure" : false,
+                    "pathRewrite" : {
+                        "^/zyx" : "/"
+                    }
+                }
+            }
+        },
+        "router" : {
+            // "base" : "http://localhost:8082"
+        }
     }
 }

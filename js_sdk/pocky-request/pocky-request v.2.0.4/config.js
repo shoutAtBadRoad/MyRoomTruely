@@ -35,7 +35,7 @@ export const config = {
 globalInterceptor.request.use(
   config => {
     console.log("is global request interceptor");
-	config.withCredentials=true;
+	// config.withCredentials=true;
     return config;
   },
   err => {
