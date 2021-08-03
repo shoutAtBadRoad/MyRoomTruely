@@ -1,0 +1,139 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+		    "path" : "pages/index/login",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		}
+	    ,{
+            "path" : "pages/message/message/message",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "message page",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/room/room",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/room/myFlex/myFlex",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/room/myFlex/log",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/room/inputBox/inputBox",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/room/myHouse",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/frdList/frdList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/room/avaPage/avaPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"enablePullDownRefresh":true
+	},
+	"tabBar": {
+				"color":"#8a8a8a",
+				"selectedColor":"#0000b6",
+				"borderStyle":"black",
+				"backgroundColor":"#ffffff",
+				"list": [
+					{
+						"pagePath":"pages/frdList/frdList",
+						"text":"好友",
+						"iconPath":"static/icon/首页.png",
+						"selectedIconPath":"static/icon/首页.png"
+					},
+					{
+						"pagePath":"pages/room/myHouse",
+						"text":"我的",
+						"iconPath":"static/icon/人员.png",
+						"selectedIconPath":"static/icon/人员.png"
+					}
+				]
+			 },
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	},
+	// pages.json
+		"easycom": {
+			"autoscan": true,
+			"custom": {
+	            // // 1.1.0 版本前:
+	            // "cl-(.*)": "cl-uni/components/$1/$1.vue",
+	
+	            // 1.1.0 版本后:
+	            "cl-(.*)": "cl-uni/components/cl-$1/cl-$1.vue"
+			}
+		}
+}
