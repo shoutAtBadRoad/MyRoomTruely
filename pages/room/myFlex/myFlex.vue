@@ -1,6 +1,6 @@
 <template>
     <view>
-		<cl-scroller ref="scroller"  :bottom="0"  @down="onDown" scroll-y="true" class="container">
+		<cl-scroller ref="scroller"  :bottom="0"  @down="onDown" scroll-y="true" class="container" v-if="flag">
 			<view v-for="(item,index) in items" :key="index">
 			  <log :content="item.content" :id="item.fromId" v-if="item.type=='text'"></log>
 			  <img-log v-if="item.type=='img'" :ava="item.content" :fromId="item.fromId"></img-log>
@@ -26,9 +26,18 @@
 				// chatId: 'abc1234',
 				// frdId: '3',
 				bottom: '',
+				flag: true,
             }
         },
         methods: {
+			chg(e){
+				console.log('change')
+				if(e==true){
+					this.$refs.scroller.height = "57vh";
+				}else{
+					this.$refs.scroller.height = "87vh";
+				}
+			},
 			async getImgList(e){
 				var img = e;
 				console.log(img.length);
@@ -210,13 +219,13 @@
 
 <style>
 	.container{
-		position: absolute;
+		position: relative;
 		display: flex;
         flex-direction: column;
         /* justify-content: flex-start; */
         align-items: flex-start;
         background-color: #f3f3f3;
         width: 100vw;
-        height: 87vh;
+		height: 87vh;
 	}
 </style>

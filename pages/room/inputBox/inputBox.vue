@@ -7,17 +7,23 @@
 				class="inputArea" v-model="input"
 				 :border="true">
 				</cl-input>
-				<image src="../../../static/icon/新增.png" class="popIcon" @click="popup()"></image>
+				<img :src="popIconSrc" class="popIcon" @click="popup()"/>
 				<cl-button class="inputBtn" form-type="submit">send</cl-button>
-				<uni-popup ref="popup" type="bottom">
+				
+				
+<!-- 				<uni-popup ref="popup" type="bottom">
 					<view class="abilities">
-						<image @click="choose()" src="../../../static/icon/拍照.png" style="width: 100rpx; height: 100rpx; margin: 33rpx;"></image>
+						<image @click="choose()" :src="popIconSrc" 
+						style="width: 100rpx; height: 100rpx; margin: 33rpx;" ></image>
 					</view>
 				
-				</uni-popup>
+				</uni-popup> -->
 			</view>
-
 		</form>
+		<view style="width: 100vw; height: 30vh;" v-if="pop" class="abilities">
+				<image @click="choose()" src="../../../static/icon/拍照.png" 
+				style="width: 100rpx; height: 100rpx; margin: 50rpx;" ></image>
+		</view>
 	</view>
 </template>
 
@@ -29,6 +35,9 @@
 		data() {
 			return {
 				input: '',
+				pop: false,
+				popIconSrc: '../../../static/icon/新增.png',
+				flag: true,
 			}
 		},
 		methods: {
@@ -53,7 +62,15 @@
 				});
 			},
 			popup(){
-				this.$refs.popup.open('bottom');
+				// this.$refs.popup.open('bottom');
+				this.pop = !this.pop;
+				if(this.pop==true){
+					this.$emit("pop",this.pop);
+					this.popIconSrc = '../../../static/icon/添加.png';
+				}else{
+					this.$emit("pop",this.pop);
+					this.popIconSrc = '../../../static/icon/新增.png';
+				}
 			},
 			pushKeyBroad(){
 				uni.hideKeyboard();
@@ -63,6 +80,9 @@
 				// console.log("msg is" + this.input);
 				this.input='';
 			},
+		},
+		mounted() {
+			this.popIconSrc = '../../../static/icon/新增.png';
 		},
 		comments:{uniPopup}
 	}
@@ -80,7 +100,7 @@
 		flex-direction: row;
 		align-items: flex-start;
 		margin: 10rpx;
-		background-color: #DCDFE6;
+		/* background-color: #DCDFE6; */
 		border-color: #808080;
 		padding: 15rpx;
 	}
@@ -91,7 +111,7 @@
 		/* background-color: #C8C7CC; */
 		width: 100vw;
 		height: 7.5vh;
-		position: fixed;
+		position: relative;
 		bottom: 0rpx;
 		-webkit-box-shadow:0 0 2px;
 	}

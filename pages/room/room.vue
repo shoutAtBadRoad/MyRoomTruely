@@ -1,8 +1,12 @@
 <template>
 <view>
         <view class="roomFlex">
-			<myFlex ref="myFlex" :chatId="chat" :frdId="frd" v-if="flag"></myFlex>
-			<inputBox @out="out" @outImg="outImg" :uid='1' @blur="pushKeyBroad()" class="iBox"></inputBox>
+			<view class="logBox">
+				<myFlex ref="myFlex" :chatId="chat" :frdId="frd" v-if="flag"></myFlex>
+			</view>
+			<view class="botBox">
+				<inputBox @out="out" @outImg="outImg" @pop="pop" :uid='1' @blur="pushKeyBroad()"></inputBox>
+			</view>
         </view>
 </view>
 </template>
@@ -22,6 +26,9 @@
             }
         },
         methods: {
+			async pop(e){
+				await this.$refs.myFlex.chg(e);
+			},
 			async outImg(e){
 			   await this.$refs.myFlex.getImgList(e);
 				// console.log(this.ava);
@@ -60,9 +67,17 @@
 .roomFlex{
 	display: flex;
 	flex-direction: column;
-	.iBox{
-		position: absolute;
-		bottom: 0%;
-	}
+	margin: 0rpx;
+}
+.logBox{
+	position: relative;
+	background-color: #3F536E;
+	height: 85vh;
+	width: 100vw;
+}
+.botBox{
+	// background-color: #409EFF;
+	position: fixed;
+	bottom: 0%;
 }
 </style>
