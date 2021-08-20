@@ -2,7 +2,7 @@
 <view>
         <view class="roomFlex">
 			<myFlex ref="myFlex" :chatId="chat" :frdId="frd" v-if="flag"></myFlex>
-			<inputBox @out=out :uid='1' @blur="pushKeyBroad()" class="iBox"></inputBox>
+			<inputBox @out="out" @outImg="outImg" :uid='1' @blur="pushKeyBroad()" class="iBox"></inputBox>
         </view>
 </view>
 </template>
@@ -22,6 +22,10 @@
             }
         },
         methods: {
+			async outImg(e){
+			   await this.$refs.myFlex.getImgList(e);
+				// console.log(this.ava);
+			},
 			pushKeyBroad(){
 				uni.showKeyboard();
 			},

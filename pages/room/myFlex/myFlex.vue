@@ -2,7 +2,8 @@
     <view>
 		<cl-scroller ref="scroller"  :bottom="0"  @down="onDown" scroll-y="true" class="container">
 			<view v-for="(item,index) in items" :key="index">
-			  <log :content="item.content" :id="item.fromId"></log>
+			  <log :content="item.content" :id="item.fromId" v-if="item.type=='text'"></log>
+			  <img-log v-if="item.type=='img'" :ava="item.content" :fromId="item.fromId"></img-log>
 			</view>
         </cl-scroller>
     </view>
@@ -11,6 +12,7 @@
 <script>    
 	import log from './log'
 	import inputBox from '../inputBox/inputBox'
+	import imgLog from '../imgLog/imgLog'
     export default{
 		props:['chatId','frdId'],
         data() {
@@ -27,28 +29,55 @@
             }
         },
         methods: {
-			async init(){
+			async getImgList(e){
+				var img = e;
+				console.log(img.length);
+				var len = 8000;
+				var part = Math.ceil(img.length/len);
+				this.num = part;
+				var imgId = new Date().getTime();
+				var p = {
+					fromId: String(this.myId),
+					toId: this.frdId,
+					type: 'img',
+					num: i,
+					id:  String(this.myId) + String(this.frdId) + String(imgId),
+					content: '',
+				};
+				for(var i=0; i<=part;i++){
+					p.num = i;
+					if(i==0){
+						p.content = part;
+					}else if(i==1){
+						p.content = img.substr(0,len);
+					}else if(i==part){
+						p.content = img.substr((i-1)*len,img.length-(i-1)*len);
+					}else{
+						p.content = img.substr((i-1)*len,len);
+					}
+					var p1 = JSON.stringify(p);
+					await  this.socketTask.send({
+						data: p1,
+					})
+				}
+			},
+			init(){
 				var myId = uni.getStorageSync('user')
 				var that = this;
 				console.log(that.frdId)
-				await this.axios.request({
-					url: '/msg/hist/'+ that.frdId +"/" + myId,
+
+				uni.request({
+					url: '/web/msg/hist/'+ that.frdId +"/" + myId,
 					method: 'get',
-					params: {},
-				}).then(function({data}){
-					// console.log(data);
-					for(var i=0;i<data.length;i++){
-						// console.log(data[i]);
-						that.items.push(data[i]);
-					}
-					// console.log(this.items);
-					if(data!=false){
-						console.log("load success");
-					}else{
-						console.log("load fail");
+					success: (res) => {
+						var data = res.data.data;
+						console.log(data)
+						for(var i=0;i<data.length;i++){
+							data[i].type='text';
+							this.items.push(data[i]);
+						}
 					}
 				})
-				// console.log("初始化数据："+ this.items);
 			},
 			onDown(){
 				this.$refs.scroller.end();
@@ -61,6 +90,7 @@
 					fromId:this.myId,
 					toId: this.frdId,
 					content:a,
+					type:'text',
 				};
 				p = JSON.stringify(p);
 				console.log(p)
@@ -78,8 +108,8 @@
 				// 创建一个this.socketTask对象【发送、接收、关闭socket都由这个对象操作】
 				this.socketTask = uni.connectSocket({
 					// 【非常重要】必须确保你的服务器是成功的,如果是手机测试千万别使用ws://127.0.0.1:9099【特别容易犯的错误】
-					// url: "ws://106.15.170.74:8082/webSocket/"+that.chatId,
-					url: "ws://localhost:8082/webSocket/"+that.chatId,
+					url: "ws://106.15.170.74:8082/webSocket/"+that.chatId,
+					// url: "ws://localhost:8082/webSocket/"+that.chatId,
 					success(data) {
 						console.log("websocket连接成功");
 					},
@@ -96,22 +126,27 @@
 					console.log("已经被关闭了")
 				})
 				this.socketTask.onMessage(function(e){
-					console.log("接收到消息："+e.data)
-					console.log("来方：" + e.data.fromId)
-					console.log("自己："+that.myId)
-					var msg = JSON.parse(String(e.data))
-					if(String(msg.fromId) != String(that.myId)){
+					// console.log("接收到消息："+e.data)
+					// console.log("来方：" + e.data.fromId)
+					// console.log("自己："+that.myId)
+					// var msg = JSON.parse(String(e.data))
+					var obj = JSON.parse(e.data);
+					var msg = JSON.parse(e.data).data;
+					console.log(msg.fromId)
+					if(obj.type=='text'){
 						that.items.push({
 							fromId: msg.fromId,
 							content: msg.content,
+							type: 'text',
 						})
-					}else{
-						console.log('自己的消息')
+					}else if(obj.type=='img'){
 						that.items.push({
-							fromId: that.myId,
+							fromId: msg.fromId,
 							content: msg.content,
+							type: 'img',
 						})
 					}
+					
 				})
 			},
 			// 关闭websocket【离开这个页面的时候执行关闭】
@@ -152,7 +187,7 @@
 			// this.connectSocketInit();
 		},
 		mounted() {
-			this.myId = uni.getStorageSync('user');
+			this.myId = String(uni.getStorageSync('user'));
 			this.init();
 			this.connectSocketInit();
 		},
@@ -169,7 +204,7 @@
 			// event.$off('onAddTitle', this.addTitleHandler)
 		},
 
-		components:{log,inputBox},
+		components:{log,inputBox,imgLog},
     }
 </script>
 

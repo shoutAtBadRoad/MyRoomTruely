@@ -71,12 +71,12 @@
     "h5" : {
         "devServer" : {
             "https" : false,
-            // "port": 8081,
+            "port" : 8008,
             "disableHostCheck" : true,
             "proxy" : {
                 "/web" : {
-                    "target" : "http://localhost:8082",
-                    // "target": "http://106.15.170.74:8081",
+                    "target" : "http://106.15.170.74:8082",
+                    // "target" : "http://localhost:8082",
                     // "target": "http://127.0.0.1:8081",
                     "changeOrigin" : true,
                     "secure" : false,
@@ -97,7 +97,11 @@
             }
         },
         "router" : {
-            // "base" : "http://localhost:8082"
-        }
+            "mode" : "hash",
+            "base" : "./"
+        },
+        "domain" : "http://106.15.170.74"
     }
 }
+// "base" : "http://localhost:8082"
+

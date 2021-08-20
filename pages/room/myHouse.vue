@@ -5,7 +5,7 @@
 			<cl-card class="icard" label="个人主页" :showMore="false" style="background-color: #dcdfe6;">
 				<view class="ishow" >
 					<view @click="avaPage()">
-						<cl-avatar :src="myImg" shape="circle" class="eimg" :size="160" ></cl-avatar>
+						<cl-avatar :src="myImg" shape="circle" class="eimg" :size="160" v-if="flag"></cl-avatar>
 					</view>
 					<text style="font-size: 30px;">{{myName}}</text>
 					<cl-button type="primary"  plain @click="avaPage()"
@@ -32,6 +32,7 @@
 				myName:'君の名は',
 				myImg: '../../static/cat.jpeg',
 				myId: '1',
+				flag:true,
 			}
 		},
 		methods: {
@@ -65,6 +66,9 @@
 				})
 			},
 		},
+		created() {
+			console.log("created!");
+		},
 		mounted() {
 			this.myId = uni.getStorageSync("user");
 			this.myImg = uni.getStorageSync('Ava'+ this.myId);
@@ -82,20 +86,17 @@
 					}
 				}
 			})
-			
-			// if(myInfo == null){
-			// this.$axios({
-			// 		url:'/user/getUser/' + this.myId,
-			// 		method:'GET'				
-			// }).then((res)=>{
-			// 		// console.log(res.data)
-			// 		if(res.code==200){
-			// 			this.myName = res.data.nickName;
-			// 			uni.setStorageSync("myInfo",res.data);
-			// 		}
-			// 	})
-			// }
+		
 		},
+		onPullDownRefresh() {
+		        console.log('refresh');
+				this.myImg = uni.getStorageSync('Ava'+ this.myId);
+		        setTimeout(function () {
+		            uni.stopPullDownRefresh();
+					this.flag = false;
+		        }, 1000);
+				this.flag = true;
+		    },
 		comments:{clAvatar}
 	}
 </script>

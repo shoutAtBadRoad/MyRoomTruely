@@ -10,7 +10,7 @@
 			<cl-divider>上传新头像</cl-divider>
 			<cl-upload ref="upload" 
 			@beforeUpload="before()" @success="imgOnSuccess()" 
-			v-model="url" action="http://localhost:8082/user/uploadAvatar"></cl-upload>
+			v-model="url" :action="action" v-if="flag" :data="uploadData"></cl-upload>
 		</view>
 	</view>
 </template>
@@ -21,11 +21,12 @@
 			return {
 				myId: '1',
 				// src: "http://106.15.170.74:8082/",
-				// action: 'http://106.15.170.74:8082/user/uploadAvatar/',
+				action: 'http://106.15.170.74:8082/user/uploadAvatar',
 				src: '',
 				url: '',
-				refresh: "true",
 				time: '',
+				flag: true,
+				uploadData:{},
 			}
 		},
 		methods: {
@@ -46,8 +47,14 @@
 			},
 		},
 		onLoad(e) {
-			this.src = 'http://localhost:8082/' + uni.getStorageSync("myInfo").imageUrl;
+			this.src = 'http://106.15.170.74:8082/' + uni.getStorageSync("myInfo").imageUrl;
+			this.action = 'http://106.15.170.74:8082/user/uploadAvatar';
+			this.uploadData = {userId : 1};
 			this.myId = uni.getStorageSync("myInfo").id;
+			setTimeout(function() {
+				this.flag = false;
+			}, 500);
+			this.flag = true;
 			this.time = Math.round(Math.random()*1000);
 		}
 	}

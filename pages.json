@@ -65,7 +65,7 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "enablePullDownRefresh": true
             }
             
         }
@@ -80,6 +80,15 @@
         }
         ,{
             "path" : "pages/room/avaPage/avaPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/room/imgLog/imgLog",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",

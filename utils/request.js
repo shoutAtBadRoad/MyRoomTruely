@@ -2,7 +2,8 @@ import Vue from 'vue'
 import axios from 'axios'
 
 const service = axios.create({
-	baseURL: 'http://localhost:8082',
+	// baseURL: 'http://localhost:8082',
+	baseURL: "http://106.15.170.74:8082",
 	timeout: 60000,
 	crossDomain: true,
 	withCredentials: true,

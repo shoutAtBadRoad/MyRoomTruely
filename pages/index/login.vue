@@ -69,7 +69,7 @@
 						var data = data.data;
 						if(data.code==200){
 							uni.setStorageSync('user',data.data);
-							that.getMyAva(data);
+							that.getMyAva(data.data);
 							uni.switchTab({
 								url:'../frdList/frdList'
 							})
@@ -86,36 +86,6 @@
 					}
 				})
 				
-				// await this.$axios({
-				// 	method:'POST',
-				// 	url:'/user/login',
-				// 	params:{
-				// 		'userName': p.userName,
-				// 		'passWord': p.passWord,						
-				// 	}
-				// }).then((data) => {
-				// 	console.log(data)
-				// 	if(data.code==200){
-				// 		// console.log("login success");
-					
-				// 		// var start = new Date().getTime();
-				// 		// while(true)  if(new Date().getTime()-start > 1000) break;
-				// 		uni.setStorageSync('user',data.data);
-				// 		that.getMyAva(data);
-				// 		uni.switchTab({
-				// 			url:'../frdList/frdList'
-				// 		})
-				// 		that.$refs.success.open({
-				// 		  message: "登陆成功",
-				// 		  type: "success",
-				// 		});
-				// 	}else{
-				// 		that.$refs.fail.open({
-				// 		          message: "登陆失败",
-				// 				  type: "error",
-				// 		        });
-				// 	}
-				// })
 			},
 			async getMyAva(e){
 				await this.$axios({
