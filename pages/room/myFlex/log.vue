@@ -11,7 +11,7 @@
 
 <script>
 	export default {
-		props:['content','id'],
+		props:['content','sid'],
 		data() {
 			return {
 				myId: '',
@@ -32,7 +32,7 @@
 		},
 		async mounted(){
 			this.myId = uni.getStorageSync('user');
-			this.uid = this.id;
+			this.uid = this.sid;
 			this.text = this.content;
 			this.ava = uni.getStorageSync("Ava"+this.uid);
 			if(this.ava==null){

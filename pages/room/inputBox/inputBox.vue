@@ -7,7 +7,7 @@
 				class="inputArea" v-model="input"
 				 :border="true">
 				</cl-input>
-				<img :src="popIconSrc" class="popIcon" @click="popup()"/>
+				<img :src="popIconSrc" class="popIcon" @click="popup()" @blur="popup()"/>
 				<cl-button class="inputBtn" form-type="submit">send</cl-button>
 				
 				
@@ -100,7 +100,7 @@
 		flex-direction: row;
 		align-items: flex-start;
 		margin: 10rpx;
-		/* background-color: #DCDFE6; */
+		background-color: #DCDFE6;
 		border-color: #808080;
 		padding: 15rpx;
 	}

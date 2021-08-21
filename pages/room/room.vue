@@ -1,11 +1,12 @@
 <template>
 <view>
         <view class="roomFlex">
-			<view class="logBox">
-				<myFlex ref="myFlex" :chatId="chat" :frdId="frd" v-if="flag"></myFlex>
+			<view class="logBox" ref="logBox">
+				<myFlex style="width: 100%; height: 100%;" ref="myFlex" :chatId="chat" :frdId="frd" v-if="flag"></myFlex>
 			</view>
 			<view class="botBox">
 				<inputBox @out="out" @outImg="outImg" @pop="pop" :uid='1' @blur="pushKeyBroad()"></inputBox>
+				<button @click="toBottom()">bot</button>
 			</view>
         </view>
 </view>
@@ -26,6 +27,10 @@
             }
         },
         methods: {
+			toBottom(){
+				this.$refs.myFlex.gotoBottom();
+				console.log("bot")
+			},
 			async pop(e){
 				await this.$refs.myFlex.chg(e);
 			},
@@ -70,8 +75,9 @@
 	margin: 0rpx;
 }
 .logBox{
+	// overflow:hidden;
 	position: relative;
-	background-color: #3F536E;
+	// background-color: #55ffff;
 	height: 85vh;
 	width: 100vw;
 }

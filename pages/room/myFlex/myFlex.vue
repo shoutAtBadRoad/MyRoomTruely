@@ -1,11 +1,12 @@
 <template>
     <view>
-		<cl-scroller ref="scroller"  :bottom="0"  @down="onDown" scroll-y="true" class="container" v-if="flag">
+		<scroll-view ref="scroller" :scroll-y="true" 
+		class="container" v-if="flag" :scroll-into-view="recognize">
 			<view v-for="(item,index) in items" :key="index">
-			  <log :content="item.content" :id="item.fromId" v-if="item.type=='text'"></log>
-			  <img-log v-if="item.type=='img'" :ava="item.content" :fromId="item.fromId"></img-log>
+			  <log :content="item.content" :sid="item.fromId" v-if="item.type=='text'" :id="'recognize' + index"></log>
+			  <img-log v-if="item.type=='img'" :ava="item.content" :fromId="item.fromId" :id="'recognize' + index"></img-log>
 			</view>
-        </cl-scroller>
+        </scroll-view>
     </view>
 </template>
 
@@ -17,6 +18,8 @@
 		props:['chatId','frdId'],
         data() {
             return {
+				recognize: 'recognize0',
+				pagetop: 0,
 				socketTask: null,
 				// 确保websocket是打开状态
 				is_open_socket: false,
@@ -30,6 +33,12 @@
             }
         },
         methods: {
+			gotoBottom(){
+				console.log(this.pagetop)
+				setTimeout(()=>{
+					this.recognize = 'recognize' + this.pagetop;
+				})
+			},
 			chg(e){
 				console.log('change')
 				if(e==true){
@@ -50,7 +59,7 @@
 					toId: this.frdId,
 					type: 'img',
 					num: i,
-					id:  String(this.myId) + String(this.frdId) + String(imgId),
+					id:  String(this.myId)+ '-' + String(this.frdId)+ '-' + String(imgId) + '-' + '0',
 					content: '',
 				};
 				for(var i=0; i<=part;i++){
@@ -70,21 +79,35 @@
 					})
 				}
 			},
-			init(){
+			async init(){
 				var myId = uni.getStorageSync('user')
 				var that = this;
 				console.log(that.frdId)
 
-				uni.request({
+				await uni.request({
 					url: '/web/msg/hist/'+ that.frdId +"/" + myId,
 					method: 'get',
-					success: (res) => {
+					success:async (res) => {
 						var data = res.data.data;
-						console.log(data)
+						// console.log(data)
+						this.pagetop = data.length-1;
 						for(var i=0;i<data.length;i++){
-							data[i].type='text';
+							// data[i].type='text';
 							this.items.push(data[i]);
-						}
+							if(data[i].type=='img')
+								await this.loadPhotos(this.items.length-1);
+							}
+						},
+				})
+				this.gotoBottom();
+			},
+			loadPhotos(e){
+				uni.request({
+					url:'/web/msg/getImg',
+					method:'GET',
+					data: {imageName: this.items[e].content},
+					success:async (res) => {
+					  this.items[e].content =  res.data.data.img;
 					}
 				})
 			},
@@ -117,8 +140,8 @@
 				// 创建一个this.socketTask对象【发送、接收、关闭socket都由这个对象操作】
 				this.socketTask = uni.connectSocket({
 					// 【非常重要】必须确保你的服务器是成功的,如果是手机测试千万别使用ws://127.0.0.1:9099【特别容易犯的错误】
-					url: "ws://106.15.170.74:8082/webSocket/"+that.chatId,
-					// url: "ws://localhost:8082/webSocket/"+that.chatId,
+					// url: "ws://106.15.170.74:8082/webSocket/"+that.chatId,
+					url: "ws://localhost:8082/webSocket/"+that.chatId,
 					success(data) {
 						console.log("websocket连接成功");
 					},
@@ -219,13 +242,13 @@
 
 <style>
 	.container{
-		position: relative;
+		position: absolute;
 		display: flex;
         flex-direction: column;
         /* justify-content: flex-start; */
         align-items: flex-start;
-        background-color: #f3f3f3;
-        width: 100vw;
-		height: 87vh;
+        /* background-color: #f3f3f3; */
+		height: 100%;
+		width: 100%;
 	}
 </style>
