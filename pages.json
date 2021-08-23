@@ -113,14 +113,14 @@
 					{
 						"pagePath":"pages/frdList/frdList",
 						"text":"好友",
-						"iconPath":"static/icon/首页.png",
-						"selectedIconPath":"static/icon/首页.png"
+						"iconPath":"static/icon/home.png",
+						"selectedIconPath":"static/icon/home.png"
 					},
 					{
 						"pagePath":"pages/room/myHouse",
 						"text":"我的",
-						"iconPath":"static/icon/人员.png",
-						"selectedIconPath":"static/icon/人员.png"
+						"iconPath":"static/icon/person.png",
+						"selectedIconPath":"static/icon/person.png"
 					}
 				]
 			 },

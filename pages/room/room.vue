@@ -6,7 +6,6 @@
 			</view>
 			<view class="botBox">
 				<inputBox @out="out" @outImg="outImg" @pop="pop" :uid='1' @blur="pushKeyBroad()"></inputBox>
-				<button @click="toBottom()">bot</button>
 			</view>
         </view>
 </view>

@@ -21,7 +21,7 @@
 			</view>
 		</form>
 		<view style="width: 100vw; height: 30vh;" v-if="pop" class="abilities">
-				<image @click="choose()" src="../../../static/icon/拍照.png" 
+				<image @click="choose()" src="../../../static/icon/photo.png" 
 				style="width: 100rpx; height: 100rpx; margin: 50rpx;" ></image>
 		</view>
 	</view>
@@ -36,7 +36,7 @@
 			return {
 				input: '',
 				pop: false,
-				popIconSrc: '../../../static/icon/新增.png',
+				popIconSrc: '../../../static/icon/new.png',
 				flag: true,
 			}
 		},
@@ -66,10 +66,10 @@
 				this.pop = !this.pop;
 				if(this.pop==true){
 					this.$emit("pop",this.pop);
-					this.popIconSrc = '../../../static/icon/添加.png';
+					this.popIconSrc = '../../../static/icon/new-1.png';
 				}else{
 					this.$emit("pop",this.pop);
-					this.popIconSrc = '../../../static/icon/新增.png';
+					this.popIconSrc = '../../../static/icon/new.png';
 				}
 			},
 			pushKeyBroad(){
@@ -82,7 +82,7 @@
 			},
 		},
 		mounted() {
-			this.popIconSrc = '../../../static/icon/新增.png';
+			this.popIconSrc = '../../../static/icon/new.png';
 		},
 		comments:{uniPopup}
 	}

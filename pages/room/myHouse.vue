@@ -75,7 +75,7 @@
 			var myInfo = uni.getStorageSync("myInfo");
 			
 			uni.request({
-				url:'/web/user/getUser',
+				url:'http://106.15.170.74:8082/user/getUser',
 				method:'GET',
 				success: (res) => {
 					console.log("session获得的方法：" + res.data)

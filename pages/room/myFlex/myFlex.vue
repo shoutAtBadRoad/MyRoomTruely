@@ -85,7 +85,7 @@
 				console.log(that.frdId)
 
 				await uni.request({
-					url: '/web/msg/hist/'+ that.frdId +"/" + myId,
+					url: 'http://106.15.170.74:8082/msg/hist/'+ that.frdId +"/" + myId,
 					method: 'get',
 					success:async (res) => {
 						var data = res.data.data;
@@ -103,7 +103,7 @@
 			},
 			loadPhotos(e){
 				uni.request({
-					url:'/web/msg/getImg',
+					url:'http://106.15.170.74:8082/msg/getImg',
 					method:'GET',
 					data: {imageName: this.items[e].content},
 					success:async (res) => {
@@ -140,8 +140,8 @@
 				// 创建一个this.socketTask对象【发送、接收、关闭socket都由这个对象操作】
 				this.socketTask = uni.connectSocket({
 					// 【非常重要】必须确保你的服务器是成功的,如果是手机测试千万别使用ws://127.0.0.1:9099【特别容易犯的错误】
-					// url: "ws://106.15.170.74:8082/webSocket/"+that.chatId,
-					url: "ws://localhost:8082/webSocket/"+that.chatId,
+					url: "ws://106.15.170.74:8082/webSocket/"+that.chatId,
+					// url: "ws://localhost:8082/webSocket/"+that.chatId,
 					success(data) {
 						console.log("websocket连接成功");
 					},

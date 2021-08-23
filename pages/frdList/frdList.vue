@@ -30,29 +30,32 @@
 		},
 		methods: {
 			async pageInit(){
-				this.frdList = [],
 				
-				await this.$axios({
-					url:"/frd/getFrd/"+uni.getStorageSync('user'),
+			   await uni.request({
+					url:"http://106.15.170.74:8082/frd/getFrd/"+uni.getStorageSync('user'),
 					method:'GET',
-				}).then((data)=>{
-					var data = data.data;
-					// console.log(data)
-					for(var i=0;i<data.length;i++){
-						// console.log(data[i])					
-						var c  = {
-							frdName: data[i].friendName,
-							frdId: data[i].friend,
-							chatId: data[i].chatId,
-							index: i,
-							ava: '',
-						};
-						this.frdList.push(c);
+					success:async (data) => {
+						this.frdList = [];
+						var data = data.data.data;
+						// console.log(data)
+						for(var i=0;i<data.length;i++){
+							// console.log(data[i])					
+							var c  = {
+								frdName: data[i].friendName,
+								frdId: data[i].friend,
+								chatId: data[i].chatId,
+								index: i,
+								ava: '',
+							};
+							this.frdList.push(c);
+							await this.getAvatar(this.frdList[i].frdId,i);
 						}
-					})
-				
-				for(var i=0;i<this.frdList.length;i++)
-					await this.getAvatar(this.frdList[i].frdId,i);
+						// for(var i=0;i<this.frdList.length;i++){
+						// 	// console.log(this.frdList[i]);
+						//    await this.getAvatar(this.frdList[i].frdId,i);
+						// }
+					}
+				})
 			},
 			startChat(e){
 				
@@ -61,15 +64,15 @@
 					animationType: "pop-in",
 				})
 			},
-			getAvatar(e,j){
-				var that = this;
-				
-				this.$axios({
-					method:'GET',
-					url:"/user/getAvatar/"+e,
-				}).then(res=>{
-					that.frdList[j].ava = "data:image/jpeg;base64,"+res.data;
-					uni.setStorageSync("Ava"+e, that.frdList[j].ava);
+			async getAvatar(e,j){	
+				await uni.request({
+					method:"GET",
+					url:'http://106.15.170.74:8082/user/getAvatar/'+e,
+					success: (res) => {
+						// console.log(res.data.data)
+						this.frdList[j].ava = "data:image/jpeg;base64,"+res.data.data;
+						uni.setStorageSync("Ava"+e, this.frdList[j].ava);
+					}
 				})
 			
 			}

@@ -53,23 +53,42 @@
 					return;
 				}
 				
-				uni.request({
+			  await	uni.request({
 					method:'POST',//请求方式  或GET，必须为大写
-					url:'/web/user/login',
+					url:'http://106.15.170.74:8082/user/login',
 					data:{
 						userName: p.userName,
-						passWord: p.passWord,						
+						passWord: p.passWord,
 					},
 					withCredentials:true,
                     xhrFields: {
                          withCredentials: true
                     },
-					success: (data) => {
+					success:async (data) => {
 						console.log(data.data)
 						var data = data.data;
 						if(data.code==200){
-							uni.setStorageSync('user',data.data);
-							that.getMyAva(data.data);
+							uni.setStorageSync('token',data.data);
+							var user = {};
+							await uni.request({
+								url:'http://106.15.170.74:8082/user/getUser2',
+								header:{
+									'token':uni.getStorageSync('token')
+								},
+								success(res) {
+									// console.log(res.data)
+									// console.log(res.data.data)
+									user = res.data.data;
+									// user = res.data.data
+									console.log(user)
+									uni.setStorageSync('myInfo',user)
+									var idd = user.id;
+									console.log(idd)
+									uni.setStorageSync('user',idd);
+									uni.setStorageSync("Ava"+idd,"data:image/jpeg;base64,"+user.image);
+								}
+							})
+							// await this.getMyAva(user.id);
 							uni.switchTab({
 								url:'../frdList/frdList'
 							})

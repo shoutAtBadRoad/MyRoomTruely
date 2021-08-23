@@ -43,7 +43,9 @@
             /* ios打包配置 */
             "ios" : {},
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         }
     },
     /* 快应用特有相关 */
@@ -67,41 +69,35 @@
     },
     "uniStatistics" : {
         "enable" : false
-    },
-    "h5" : {
-        "devServer" : {
-            "https" : false,
-            "port" : 8008,
-            "disableHostCheck" : true,
-            "proxy" : {
-                "/web" : {
-                    // "target" : "http://106.15.170.74:8082",
-                    "target" : "http://localhost:8082",
-                    // "target": "http://127.0.0.1:8081",
-                    "changeOrigin" : true,
-                    "secure" : false,
-                    "pathRewrite" : {
-                        "^/web" : "/"
-                    }
-                },
-                "/zyx" : {
-                    "target" : "http://101.133.137.140:9300",
-                    // "target": "http://106.15.170.74:8081",
-                    // "target": "http://127.0.0.1:8081",
-                    "changeOrigin" : true,
-                    "secure" : false,
-                    "pathRewrite" : {
-                        "^/zyx" : "/"
-                    }
-                }
-            }
-        },
-        "router" : {
-            "mode" : "hash",
-            "base" : "./"
-        },
-        "domain" : "http://106.15.170.74"
     }
 }
-// "base" : "http://localhost:8082"
+// "h5" : {
+// 	"devServer" : {
+// 		"https" : false,
+// 		"port" : 8008,
+// 		"disableHostCheck" : true,
+// 		"proxy" : {
+// 			"http://106.15.170.74:8082" : {
+// 				"target" : "http://106.15.170.74:8082",
+// 				// "target" : "http://localhost:8082",
+// 				// "target": "http://127.0.0.1:8081",
+// 				"changeOrigin" : true,
+// 				"secure" : false,
+// 				"pathRewrite" : {
+// 					"^http://106.15.170.74:8082" : "/"
+// 				}
+// 			},
+// 			"/zyx" : {
+// 				"target" : "http://101.133.137.140:9300",
+// 				// "target": "http://106.15.170.74:8081",
+// 				// "target": "http://127.0.0.1:8081",
+// 				"changeOrigin" : true,
+// 				"secure" : false,
+// 				"pathRewrite" : {
+// 					"^/zyx" : "/"
+// 				}
+// 			}
+// 		}
+// 	}
+// }
 

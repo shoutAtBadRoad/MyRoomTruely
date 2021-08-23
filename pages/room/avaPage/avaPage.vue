@@ -31,13 +31,15 @@
 		},
 		methods: {
 			async imgOnSuccess(){
-				await this.$axios({
-					url:'/user/getAvatar/'+this.myId,
-					method:'GET',					
-				}).then((res)=>{
-					console.log(res.data)
-					if(res.code==200){
-						uni.setStorageSync('Ava'+this.myId,"data:image/jpeg;base64,"+res.data);
+				
+				await uni.request({
+					url:'http://106.15.170.74:8082/user/getAvatar/'+this.myId,
+					method:'GET',
+					success:(res)=>{
+						res = res.data;
+						if(res.code==200){
+							uni.setStorageSync('Ava'+this.myId,"data:image/jpeg;base64,"+res.data);
+						}
 					}
 				})
 				this.time=Math.round(Math.random()*1000);
@@ -46,10 +48,19 @@
 				// this.$refs.upload.action = this.action;
 			},
 		},
-		onLoad(e) {
-			this.src = 'http://106.15.170.74:8082/' + uni.getStorageSync("myInfo").imageUrl;
+		async onLoad(e) {
+			var url = '';
+			await uni.request({
+				url:'http://106.15.170.74:8082/user/getAva/'+this.myId,
+				method:"GET",
+				success: (res) => {
+					url = res.data.data;
+					console.log(url)
+					this.src = url;
+				}
+			})
 			this.action = 'http://106.15.170.74:8082/user/uploadAvatar';
-			this.uploadData = {userId : 1};
+			this.uploadData = {userId : this.myId};
 			this.myId = uni.getStorageSync("myInfo").id;
 			setTimeout(function() {
 				this.flag = false;
